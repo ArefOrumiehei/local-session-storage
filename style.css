@@ -24,28 +24,58 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
+.text-dir-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.text-dir-ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+
 .container {
   padding: 30px;
   border-radius: 20px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
   text-align: center;
   width: 90%;
-  max-width: 400px;
+  max-width: 350px;
   transition: background 0.3s, color 0.3s;
 }
 
-select, input, button {
-  padding: 10px 15px;
+select, button {
+  padding: 8px 12px;
   font-size: 1rem;
   margin-top: 10px;
   border: none;
   border-radius: 8px;
   width: 100%;
   box-sizing: border-box;
+  transition: all .2s ease-in-out;
 }
 
-input::placeholder {
-  color: #aaa;
+
+#choose-avatar-text {
+  font-size: 1.1rem;
+}
+
+.avatars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.avatar {
+  transition: all .2s ease;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.avatar:hover {
+  transform: scale(1.3);
 }
 
 .btns {
@@ -60,23 +90,31 @@ input::placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 70%;
   gap: 8px;
+  flex-direction: column;
+  margin-top: 8px;
+}
+
+.clear-btns button {
+  margin-top: 0;
 }
 
 #local-clear, #session-clear {
   background: tomato;
 }
 
+#local-clear:hover, #session-clear:hover {
+  background: #dc143c;
+}
+
 button {
   cursor: pointer;
   transition: background 0.3s;
-}
-
-#greeting {
-  font-size: 1.3rem;
-  margin-bottom: 15px;
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Vazirmatn", sans-serif;
 }
 
 .top-bar {
@@ -115,6 +153,58 @@ button {
   padding: 5px 10px;
 }
 
+.colors-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 10px;
+}
+
+#color-picker {
+  width: 130px;
+  display: flex; 
+  gap: 6px; 
+  flex-wrap: wrap; 
+  max-width: 220px;
+}
+
+.colors-save-btns {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.colors-save-btns button {
+  margin-top: 0;
+}
+
+.guide-text-container-en {
+  position: absolute;
+  top: 100px;
+  left: 80px;
+  width: 350px;
+  display: block;
+}
+
+.guide-text-container-fa {
+  position: absolute;
+  top: 100px;
+  right: 80px;
+  width: 350px;
+  direction: rtl;
+  display: none;
+}
+
+
+.guide-text {
+  font-size: 1rem;
+  line-height: 26px;
+  color: #737373;
+}
+
 /* Light Theme */
 body.light {
   background: var(--bg-light);
@@ -126,14 +216,17 @@ body.light {
   color: var(--text-light);
 }
 
-.light input {
-  background-color: #fff;
-  color: #111;
+.light #choose-avatar-text {
+  color: #fff;
 }
 
 .light button {
   background: var(--button-light);
   color: white;
+}
+
+.light button:hover {
+  background-color: #9c27b0;
 }
 
 /* Dark Theme */
@@ -147,9 +240,8 @@ body.dark {
   color: var(--text-dark);
 }
 
-.dark input {
-  background-color: #4a3b5a;
-  color: #fff;
+.light #choose-avatar-text {
+  color: #000;
 }
 
 .dark input::placeholder {
@@ -159,4 +251,8 @@ body.dark {
 .dark button {
   background: var(--button-dark);
   color: black;
+}
+
+.dark button:hover {
+  background-color: #e1bee7;
 }

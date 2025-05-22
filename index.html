@@ -21,10 +21,18 @@
   </div>
 
   <div class="container">
-    <div id="greeting"></div>
-    <input type="text" id="username" placeholder="Enter your name" />
+    <h2 id="welcome"></h2>
+    <div id="avatar-selection">
+      <p id="choose-avatar-text">Choose an avatar:</p>
+      <div class="avatars">
+        <span class="avatar" onclick="selectAvatar('🦊')">🦊</span>
+        <span class="avatar" onclick="selectAvatar('🐱')">🐱</span>
+        <span class="avatar" onclick="selectAvatar('🐼')">🐼</span>
+        <span class="avatar" onclick="selectAvatar('🦁')">🦁</span>
+      </div>
+    </div>
+
     <div class="btns">
-      <button id="saveBtn" onclick="saveName()">Save</button>
       <div class="clear-btns">
         <button id="local-clear" onclick="clearLocal()">Clear Local Storage</button>
         <button id="session-clear" onclick="clearSession()">Clear Session Storage</button>
@@ -32,42 +40,149 @@
     </div>
   </div>
 
+  <div class="colors-container">
+    <div id="color-picker"></div>
+    <div class="colors-save-btns">
+      <button onclick="saveColorForAllTabs()">Save for all tabs</button>
+      <button onclick="saveColorForCurrentTab()">Save for this tab only</button>
+    </div>
+  </div>
+
+  <div class="guide-text-container-en">
+    <p class="guide-text">
+      1.Right-click anywhere on the page and choose
+      "Inspect" (or just press F12 or Ctrl + Shift + I).<br>
+
+      2.In the opened Developer Tools (DevTools), click the
+      "Application" tab at the top.<br>
+
+      3.On the left sidebar:<br>
+
+      -Click the arrow next to "Local Storage" and select your site’s domain.<br>
+
+      -Click "Session Storage" and select your site’s domain.<br>
+
+      4.You’ll now see all the keys and values stored in each storage area.<br>
+
+      Tip:<br>
+      -You can edit or delete any entry directly from this panel.<br>
+
+      -Any changes your JavaScript makes (like background color) will appear here live.
+    </p>
+  </div>
+
+  <div class="guide-text-container-fa">
+    <p class="guide-text">
+      ۱.روی صفحه راست‌کلیک کنید و گزینه‌ی
+      "Inspect"  رو انتخاب کن.
+      یا از کلید میان‌بر F12 یا Ctrl + Shift + I استفاده کنید.<br>
+
+    ۲.از پنجره‌ی ابزار توسعه‌دهنده (DevTools)، بالا سمت راست روی تب
+      "Application" کلیک کنید.<br>
+
+    ۳.حالا از ستون سمت چپ:<br>
+
+    - برای دیدن LocalStorage، روی فلش کنار
+      "Local Storage" کلیک کنید و آدرس سایت رو انتخاب کنید.<br>
+
+      - برای SessionStorage، روی
+      "Session Storage" کلیک کنید و دوباره آدرس سایتت رو انتخاب کنید.<br>
+
+      ۵.در پنل سمت راست، لیستی از کلیدها (key) و مقادیر (value) رو می‌بینید که ذخیره شده‌اند.<br>
+
+      نکته:<br>
+      -می‌تونید روی هر مقدار کلیک کنید و اونو ویرایش یا حذف کنید.<br>
+
+      -اگر مقدار جدیدی ذخیره شده باشه (مثلاً رنگ پس‌زمینه)، بلافاصله در اینجا ظاهر می‌شه.<br>
+    </p>
+  </div>
+
   <script>
     const langData = {
       fa: {
-        placeholder: "نام خود را وارد کنید",
+        chooseAvatarText: "یک آواتار انتخاب کن:",
         button: "ذخیره",
         localClearBtn: "پاک کردن لوکال",
         sessionClearBtn: "پاک کردن سشن",
-        greetingSession: (name) => `سلام ${name} جان، این تب فقط مال توئه! 👋`,
-        greetingLocal: (name) => `خوش برگشتی ${name} عزیز 🌟`
+        saveAllTabsBtn: "ذخیره برای همه تب‌ها",
+        saveThisTabBtn: "ذخیره برای این تب",
       },
       en: {
-        placeholder: "Enter your name",
+        chooseAvatarText: "Choose an avatar:",
         button: "Save",
-        greetingSession: (name) => `Hello ${name}, this tab is just for you! 👋`,
-        greetingLocal: (name) => `Welcome back, ${name}! 🌟`
+        localClearBtn: "Clear Local Storage",
+        sessionClearBtn: "Clear Session Storage",
+        saveAllTabsBtn: "Save for all tabs",
+        saveThisTabBtn: "Save for this tab only",
       }
     };
+
 
     let currentLang = localStorage.getItem("lang") || "en";
     let currentMode = localStorage.getItem("mode") || "dark";
     document.getElementById("language").value = currentLang;
     document.body.classList.add(currentMode);
 
+    function selectAvatar(emoji) {
+      sessionStorage.setItem("avatar", emoji);
+      localStorage.setItem("avatar", emoji);
+      showWelcome(emoji);
+    }
+
+    function showWelcome(emoji) {
+      const names = {
+        fa: {
+          "🦊": "روباه باهوش",
+          "🐱": "گربه ناز",
+          "🐼": "پاندای مهربون",
+          "🦁": "شیر شجاع",
+          default: "دوست عزیز"
+        },
+        en: {
+          "🦊": "Smart Fox",
+          "🐱": "Cute Cat",
+          "🐼": "Kind Panda",
+          "🦁": "Brave Lion",
+          default: "Dear Friend"
+        }
+      };
+
+      const lang = currentLang === "fa" ? "fa" : "en";
+      const name = names[lang][emoji] || names[lang].default;
+
+      const welcomeMessage = lang === "fa"
+        ? `خوش اومدی، ${name}!`
+        : `Welcome, ${name}!`;
+
+      document.getElementById("avatar-selection").style.display = "none";
+      document.getElementById("welcome").innerText = welcomeMessage;
+    }
+
     function applyLanguage() {
       const t = langData[currentLang];
-      document.getElementById("username").placeholder = t.placeholder;
-      document.getElementById("saveBtn").innerText = t.button;
+      document.getElementById("choose-avatar-text").innerText = t.chooseAvatarText;
+      document.getElementById("local-clear").innerText = t.localClearBtn;
+      document.getElementById("session-clear").innerText = t.sessionClearBtn;
+      document.querySelector(".colors-save-btns button:nth-child(1)").innerText = t.saveAllTabsBtn;
+      document.querySelector(".colors-save-btns button:nth-child(2)").innerText = t.saveThisTabBtn;
 
-      const sessionName = sessionStorage.getItem("username");
-      const localName = localStorage.getItem("username");
+      const guideTextEn = document.querySelector(".guide-text-container-en")
+      const guideTextFa = document.querySelector(".guide-text-container-fa")
 
-      if (sessionName) {
-        showGreeting(t.greetingSession(sessionName));
-      } else if (localName) {
-        showGreeting(t.greetingLocal(localName));
+      if (currentLang === "fa" ) {
+        guideTextFa.style.display = "block";
+        guideTextEn.style.display = "none";
+      } else {
+        guideTextFa.style.display = "none";
+        guideTextEn.style.display = "block";
       }
+
+      const avatar = sessionStorage.getItem("avatar");
+      if (avatar) {
+        showWelcome(avatar);
+      }
+
+      updateTextDirection();
     }
 
     function changeLanguage() {
@@ -83,17 +198,14 @@
       localStorage.setItem("mode", newMode);
     }
 
-    function showGreeting(message) {
-      const greetingElem = document.getElementById("greeting");
-      greetingElem.style.display = 'block';
-      greetingElem.innerText = message;
+    function clearLocal() {
+      localStorage.clear();
+      location.reload();
     }
 
-    function saveName() {
-      const name = document.getElementById("username").value;
-      sessionStorage.setItem("username", name);
-      localStorage.setItem("username", name);
-      applyLanguage();
+    function clearSession() {
+      sessionStorage.clear();
+      location.reload();
     }
 
     // Timer Zone
@@ -111,7 +223,71 @@
     setInterval(updateTimer, 1000);
     updateTimer();
 
-    
+    // Color for card
+    const colorOptions = [
+      "#ffc2f9", "#c2fff9", "#c2f9ff", "#f9ffc2",
+      "#f9c2ff", "#d9f9c2", "#c2d9f9", "#f2c2c2",
+      "#e0c2f9", "#b8f9c2", "#f9e2c2", "#c2f0f9"
+    ];
+
+    const container = document.getElementById("color-picker");
+
+    colorOptions.forEach(color => {
+      const btn = document.createElement("div");
+      btn.style.background = color;
+      btn.style.width = "24px";
+      btn.style.height = "24px";
+      btn.style.borderRadius = "50%";
+      btn.style.border = "1px solid #000";
+      btn.style.cursor = "pointer";
+      btn.title = color;
+      btn.addEventListener("click", () => {
+        document.querySelector(".container").style.background = color;
+        sessionStorage.setItem("tempBg", color);
+      });
+      container.appendChild(btn);
+    });
+
+    function saveColorForAllTabs() {
+      const bg = sessionStorage.getItem("tempBg");
+      if (bg) {
+        localStorage.setItem("bgColor", bg);
+        applySavedColor();
+      }
+    }
+
+    function saveColorForCurrentTab() {
+      const bg = sessionStorage.getItem("tempBg");
+      if (bg) {
+        sessionStorage.setItem("bgColor", bg);
+        applySavedColor();
+      }
+    }
+
+    function applySavedColor() {
+      const sessionColor = sessionStorage.getItem("bgColor");
+      const localColor = localStorage.getItem("bgColor");
+
+      const bg = sessionColor || localColor;
+      if (bg) {
+        document.querySelector(".container").style.background = bg;
+      }
+    }
+
+    function updateTextDirection() {
+      const textElements = document.querySelectorAll("h2, p, button, select, #welcome, #choose-avatar-text, .guide-text");
+      textElements.forEach(el => {
+        if (currentLang === "fa") {
+          el.classList.add("text-dir-rtl");
+          el.classList.remove("text-dir-ltr");
+        } else {
+          el.classList.add("text-dir-ltr");
+          el.classList.remove("text-dir-rtl");
+        }
+      });
+    }
+
+    applySavedColor();    
     applyLanguage();
   </script>
 </body>
