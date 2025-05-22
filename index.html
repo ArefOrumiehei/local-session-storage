@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Web Storage Api</title>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="left">
+      <select id="language" onchange="changeLanguage()">
+        <option value="fa">fa</option>
+        <option value="en">en</option>
+      </select>
+      <button class="mode-toggle" onclick="toggleMode()">🌓</button>
+    </div>
+    <div class="right">
+      <div id="timer" style="font-weight: bold; font-size: 1.2rem; margin-right: 1rem;"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="greeting"></div>
+    <input type="text" id="username" placeholder="Enter your name" />
+    <div class="btns">
+      <button id="saveBtn" onclick="saveName()">Save</button>
+      <div class="clear-btns">
+        <button id="local-clear" onclick="clearLocal()">Clear Local Storage</button>
+        <button id="session-clear" onclick="clearSession()">Clear Session Storage</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const langData = {
+      fa: {
+        placeholder: "نام خود را وارد کنید",
+        button: "ذخیره",
+        localClearBtn: "پاک کردن لوکال",
+        sessionClearBtn: "پاک کردن سشن",
+        greetingSession: (name) => `سلام ${name} جان، این تب فقط مال توئه! 👋`,
+        greetingLocal: (name) => `خوش برگشتی ${name} عزیز 🌟`
+      },
+      en: {
+        placeholder: "Enter your name",
+        button: "Save",
+        greetingSession: (name) => `Hello ${name}, this tab is just for you! 👋`,
+        greetingLocal: (name) => `Welcome back, ${name}! 🌟`
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "en";
+    let currentMode = localStorage.getItem("mode") || "dark";
+    document.getElementById("language").value = currentLang;
+    document.body.classList.add(currentMode);
+
+    function applyLanguage() {
+      const t = langData[currentLang];
+      document.getElementById("username").placeholder = t.placeholder;
+      document.getElementById("saveBtn").innerText = t.button;
+
+      const sessionName = sessionStorage.getItem("username");
+      const localName = localStorage.getItem("username");
+
+      if (sessionName) {
+        showGreeting(t.greetingSession(sessionName));
+      } else if (localName) {
+        showGreeting(t.greetingLocal(localName));
+      }
+    }
+
+    function changeLanguage() {
+      currentLang = document.getElementById("language").value;
+      localStorage.setItem("lang", currentLang);
+      applyLanguage();
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+      document.body.classList.toggle("light");
+      const newMode = document.body.classList.contains("dark") ? "dark" : "light";
+      localStorage.setItem("mode", newMode);
+    }
+
+    function showGreeting(message) {
+      const greetingElem = document.getElementById("greeting");
+      greetingElem.style.display = 'block';
+      greetingElem.innerText = message;
+    }
+
+    function saveName() {
+      const name = document.getElementById("username").value;
+      sessionStorage.setItem("username", name);
+      localStorage.setItem("username", name);
+      applyLanguage();
+    }
+
+    // Timer Zone
+    let seconds = parseInt(sessionStorage.getItem("timeSpent")) || 0;
+    const timerElem = document.getElementById("timer");
+
+    function updateTimer() {
+      seconds++;
+      sessionStorage.setItem("timeSpent", seconds);
+      const min = Math.floor(seconds / 60);
+      const sec = seconds % 60;
+      timerElem.innerText = `${min}:${sec.toString().padStart(2, "0")}`;
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    
+    applyLanguage();
+  </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+
+/* Variables */
+:root {
+  --bg-light: #f8eafa;
+  --bg-dark: #2a2139;
+  --text-light: #111;
+  --text-dark: #fff;
+  --card-light: #ffc2f9;
+  --card-dark: #3c2a4d;
+  --button-light: #ba68c8;
+  --button-dark: #ce93d8;
+}
+
+body {
+  font-family: "Vazirmatn", sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, color 0.3s;
+}
+
+.container {
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  transition: background 0.3s, color 0.3s;
+}
+
+select, input, button {
+  padding: 10px 15px;
+  font-size: 1rem;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+.btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.clear-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+}
+
+#local-clear, #session-clear {
+  background: tomato;
+}
+
+button {
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#greeting {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  display: none;
+}
+
+.top-bar {
+  position: absolute;
+  top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+
+.top-bar .left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-left: 1rem;
+}
+
+#language {
+  width: max-content;
+  background: #ce93d8;
+  color: #3c2a4d;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.mode-toggle {
+  cursor: pointer;
+  font-size: 1.2rem;
+  background: none;
+  border: 2px solid currentColor;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+/* Light Theme */
+body.light {
+  background: var(--bg-light);
+  color: var(--text-light);
+}
+
+.light .container {
+  background: var(--card-light);
+  color: var(--text-light);
+}
+
+.light input {
+  background-color: #fff;
+  color: #111;
+}
+
+.light button {
+  background: var(--button-light);
+  color: white;
+}
+
+/* Dark Theme */
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+.dark .container {
+  background: var(--card-dark);
+  color: var(--text-dark);
+}
+
+.dark input {
+  background-color: #4a3b5a;
+  color: #fff;
+}
+
+.dark input::placeholder {
+  color: #ddd;
+}
+
+.dark button {
+  background: var(--button-dark);
+  color: black;
+}
