@@ -22,6 +22,7 @@ body {
   align-items: center;
   justify-content: center;
   transition: background 0.3s, color 0.3s;
+  user-select: none;
 }
 
 .text-dir-rtl {
@@ -36,7 +37,7 @@ body {
 
 
 .container {
-  padding: 30px;
+  padding: 28px;
   border-radius: 20px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
   text-align: center;
@@ -163,7 +164,9 @@ button {
 
 #color-picker {
   width: 130px;
-  display: flex; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px; 
   flex-wrap: wrap; 
   max-width: 220px;
@@ -255,4 +258,27 @@ body.dark {
 
 .dark button:hover {
   background-color: #e1bee7;
+}
+
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .guide-text-container-en, .guide-text-container-fa {
+    display: none !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 60%;
+  }
+
+  .colors-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #color-picker {
+    width: 90%;
+  }
 }
